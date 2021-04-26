@@ -1,12 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle } from 'styled-components'
+import { store } from './store/store';
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-variant: normal;
+    color: #707070;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GlobalStyle />
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
