@@ -23,6 +23,7 @@ export const TitleLineWrapper = styled.div`
     flex-direction: column;
     margin-left: 100px;
     margin-right: 40px;
+    color: #707070;
 
     @media (max-width: 768px) {
         margin: 0;

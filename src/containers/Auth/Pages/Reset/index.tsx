@@ -1,11 +1,11 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { updateObject, checkValidity } from '../../../../shared/utility';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions/index';
 import Presentation from '../../../../components/UI/Presentation';
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
 import { IAnyProperty } from '../../../../shared/interfaces';
+import { updateControls } from '../../../../shared/utility';
 
 import Form from '../../../../components/Form/index';
 
@@ -38,13 +38,7 @@ const Reset: React.FC = () => {
     }, []);
 
     const inputChangedHandler = ( event: ChangeEvent<HTMLInputElement>, controlName: string ) => {
-        const updatedControls = updateObject( controls, {
-            [controlName]: updateObject( controls[controlName], {
-                value: event.target.value,
-                valid: checkValidity( event.target.value, controls[controlName].validation ),
-                touched: true
-            } )
-        } );
+        const updatedControls = updateControls(event, controlName, controls);
         setControls(updatedControls);
     }
 

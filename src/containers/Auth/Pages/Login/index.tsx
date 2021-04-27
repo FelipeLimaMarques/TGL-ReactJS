@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { updateObject, checkValidity } from '../../../../shared/utility';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../../../../store/actions/index';
 import { IAnyProperty } from '../../../../shared/interfaces';
+import { updateControls } from '../../../../shared/utility';
 
 import Presentation from '../../../../components/UI/Presentation';
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
@@ -11,9 +11,7 @@ import Form from '../../../../components/Form/index';
 
 const Login: React.FC = () => {
     const dispatch = useAppDispatch();
-    //const loading = useAppSelector(state => state.login.loading);
     const isAuthenticated = useAppSelector(state => state.auth.currentUser !== null);
-    const current = useAppSelector(state => state.auth.currentUser);
     const authRedirectPath = useAppSelector(state => state.auth.loginRedirectPath);
 
     const [controls, setControls] = useState<IAnyProperty>({
@@ -53,13 +51,7 @@ const Login: React.FC = () => {
     }, [])
 
     const inputChangedHandler = ( event: ChangeEvent<HTMLInputElement>, controlName: string ) => {
-        const updatedControls = updateObject( controls, {
-            [controlName]: updateObject( controls[controlName], {
-                value: event.target.value,
-                valid: checkValidity( event.target.value, controls[controlName].validation ),
-                touched: true
-            } )
-        } );
+        const updatedControls = updateControls(event, controlName, controls);
         setControls(updatedControls);
     }
 

@@ -20,7 +20,7 @@ export const BoldLink = styled(Link)<IBoldLink>`
     font-size: ${props => props.fontSize ? props.fontSize : '2em'};
     font-style: italic;
     font-weight: bold;
-    ${props => props.hasColor && 'color: #B5C401' };
+    color: ${props => props.hasColor ? '#B5C401' : '#707070'};
     background-color: transparent;
     border: none;
     outline: none;

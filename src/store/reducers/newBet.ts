@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { AnyAction } from 'redux';
 import { updateObject, randComplete } from '../../shared/utility';
 import { IBet } from '../../shared/interfaces';
+import { toast } from 'react-toastify';
 
 interface INewBet {
     bets: Array<IBet>,
@@ -27,7 +28,7 @@ const addNumber = (state: INewBet, action: AnyAction) => {
     };
 
     if (state.bet.numbers.length >= action.maxLength) {
-        alert(`Você não pode selecionar mais do que ${action.maxLength} números.`);
+        toast.warn(`Você não pode selecionar mais do que ${action.maxLength} números.`);
 
         return state;
     }
@@ -59,7 +60,7 @@ const clearNumbers = (state: INewBet, action: AnyAction) => {
 
 const completeNumbers = (state: INewBet, action: AnyAction) => {
     if (state.bet.numbers.length >= action.maxLength) {
-        alert(`Você não pode selecionar mais do que ${action.maxLength} números.`);
+        toast.warn(`Você não pode selecionar mais do que ${action.maxLength} números.`);
 
         return state;
     }
@@ -95,7 +96,7 @@ const addToCart = (state: INewBet, action: AnyAction) => {
         })
     }
     else {
-        alert(`Selecione ${action.maxNumber} números!`);
+        toast.warn(`Selecione ${action.maxNumber} números!`);
         
         return state;
     }

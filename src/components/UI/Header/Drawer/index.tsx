@@ -22,6 +22,7 @@ const Drawer: React.FC<IProps> = props => {
     let location = useLocation();
     let homeLink: JSX.Element = <DrawerLink to="/home">Home</DrawerLink>;
     let newbetLink: JSX.Element = <DrawerLink to="/newbet">New Bet</DrawerLink>;
+    let accountLink: JSX.Element = <DrawerLink to="/account">Account</DrawerLink>;
 
     switch (location.pathname) {
         case '/home': {
@@ -30,6 +31,10 @@ const Drawer: React.FC<IProps> = props => {
         }
         case '/newbet': {
             newbetLink = <ActiveLink to="/newbet">New Bet</ActiveLink>;
+            break;
+        }
+        case '/account': {
+            accountLink = <ActiveLink to="/account">Account</ActiveLink>;
             break;
         }
         default: {}
@@ -50,7 +55,7 @@ const Drawer: React.FC<IProps> = props => {
                         {newbetLink}
                     </LinkContainer>
                     <LinkContainer onClick={props.handler}>
-                        <DrawerLink to="#">Account</DrawerLink>
+                        {accountLink}
                     </LinkContainer>
                     <LinkContainer onClick={props.handler}>
                         <DrawerLink to="/logout" exact>Log Out</DrawerLink>

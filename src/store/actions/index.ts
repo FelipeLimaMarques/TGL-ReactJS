@@ -5,7 +5,8 @@ export {
     register,
     setRegisterRedirectPath,
     reset,
-    setResetRedirectPath
+    setResetRedirectPath,
+    updateAccount
 } from './auth';
 export {
     fetchGames

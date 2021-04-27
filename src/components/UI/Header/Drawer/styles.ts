@@ -56,9 +56,11 @@ export const DrawerLink = styled(NavLink)`
     text-decoration: none;
     font-size: 1.4em;
     font-weight: bold;
+    color: #707070;
 `
 
 export const ActiveLink = styled(DrawerLink)`
+    color: #707070;
     background-color: #D1D1D1;
     border-color: #D1D1D1;
     filter: brightness(0.95);

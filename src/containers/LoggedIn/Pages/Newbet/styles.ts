@@ -127,9 +127,11 @@ export const Icon = styled.img`
 
 export const BoldSpan = styled.span`
     font-weight: bold;
+    color: #707070;
 `
 
 export const NormalH2 = styled.h2`
     font-weight: normal;
     margin-bottom: 33px;
+    color: #707070;
 `

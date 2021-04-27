@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions';
 import { IGame } from '../../../../shared/interfaces';
+import { toast } from 'react-toastify';
 
 import cart from '../../../../assets/cart.png';
 import GameButtons from '../../../../components/GameButtons';
@@ -30,6 +32,7 @@ const Newbet: React.FC = () => {
     const selected = useAppSelector(state => state.newBet.bet);
     const bets = useAppSelector(state => state.newBet.bets);
     const totalPrice = useAppSelector(state => state.newBet.totalPrice);
+    const history = useHistory();
 
     useEffect(() => {
         window.scrollTo(0,0);
@@ -63,9 +66,10 @@ const Newbet: React.FC = () => {
         if (totalPrice >= 30) {
             dispatch(actions.saveBets(bets));
             dispatch(actions.clearCart());
+            history.push('/home');
         }
         else {
-            alert('Valor mínimo de compra: R$30,00.');
+            toast.warn('Valor mínimo de compra: R$30,00.');
         }
     }
     
@@ -79,7 +83,7 @@ const Newbet: React.FC = () => {
                         <GameButtons types={types} clicked={setCurrent} current={game}/>
                     </GamesWrapper>
                     <BoldSpan>Fill your bet</BoldSpan>
-                    <p>{game.description}</p>
+                    <p style={{color: '#707070'}}>{game.description}</p>
                     <GameNumbers range={game.range} maxLength={game['max-number']} selected={selected.numbers} color={game.color} clicked={handleSelectedNumber}/>
                     <ButtonsRow>
                         <ButtonsWrapper>

@@ -3,11 +3,13 @@ import styled from 'styled-components';
 export const StyledH2 = styled.h2`
     margin-top: 32px;
     margin-left: 16px;
+    color: #707070;
 `
 
 export const StyledSpan = styled.span`
     font-weight: normal;
     font-style: normal;
+    color: #707070;
 `
 
 export const GameCard = styled.div`
@@ -52,6 +54,7 @@ export const Numbers = styled.p`
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
+    color: #707070;
 
     @media (max-width: 768px) {
         width: 100%;

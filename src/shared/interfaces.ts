@@ -14,13 +14,10 @@ export interface ITypes {
     ] | null
 }
 
-export interface ILogin {
+export interface IUser {
     email: string
     password: string,
-}
-
-export interface IUser extends ILogin {
-    name: string,
+    name?: string,
 }
 
 export interface IBet {

@@ -113,7 +113,7 @@ export const Input = styled.input<{isValid: boolean}>`
     height: 64px;
     border: none;
     border-bottom: 2px solid ${props => props.isValid ? '#EBEBEB' : 'red'};
-    ${props => !props.isValid && 'color: red'};
+    color: ${props => !props.isValid ? 'red' : '#707070'};
     outline: none;
     margin: 0;
     font-size: 1.3em;
@@ -158,4 +158,5 @@ export const H3 = styled.h3`
     font-style: italic;
     font-weight: bold;
     color: #707070;
+    white-space: nowrap;
 `;

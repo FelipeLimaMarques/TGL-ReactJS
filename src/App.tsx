@@ -40,6 +40,7 @@ const Register = React.lazy(() => import('./containers/Auth/Pages/Register'));
 const Reset = React.lazy(() => import('./containers/Auth/Pages/Reset'));
 const LoggedIn = React.lazy(() => import('./containers/LoggedIn/Pages/Recent'));
 const Newbet = React.lazy(() => import('./containers/LoggedIn/Pages/Newbet'));
+const Account = React.lazy(() => import('./containers/LoggedIn/Pages/Account'));
 
 const App: React.FC = () => {
   const isAuthenticated = useAppSelector(state => state.auth.currentUser !== null);
@@ -60,6 +61,7 @@ const App: React.FC = () => {
       <Route path="/registration" component={Register} />
       <Route path="/reset" component={Reset} />
       <Route path="/login" component={Login} />
+      <Route path="/account" component={Account} />
       <Route path="/logout" component={Logout} />
       <Redirect to="/home" />
     </Switch>

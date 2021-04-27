@@ -50,7 +50,7 @@ const Recent: React.FC = () => {
     types && (buttons = <GameButtons types={types} current={currentGame} clicked={handleFilter} />);
     !isFiltered && (buttons = <GameButtons types={types} clicked={handleFilter} />);
 
-    let cards: JSX.Element = <p>Nenhum jogo cadastrado.</p>;
+    let cards: JSX.Element = <P>Nenhum jogo cadastrado.</P>;
     hasItems && (cards = <GameCards saved={filtered}/>);
 
     return(

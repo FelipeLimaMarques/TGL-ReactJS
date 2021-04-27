@@ -6,23 +6,28 @@ import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle } from 'styled-components'
 import { store } from './store/store';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyle = createGlobalStyle`
   * {
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     font-variant: normal;
-    color: #707070;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
+
 `
+
+toast.configure();
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
     <Provider store={store}>
+      <ToastContainer position="top-center"/>
       <BrowserRouter>
         <App />
       </BrowserRouter>

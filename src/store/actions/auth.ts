@@ -1,16 +1,16 @@
 import { AppDispatch } from '../store';
-import { IUser, ILogin } from '../../shared/interfaces';
+import { IUser } from '../../shared/interfaces';
 
 import * as actionTypes from './actionTypes';
 
-export const loginStart = (user: ILogin) => {
+export const loginStart = (user: IUser) => {
     return {
         type: actionTypes.LOGIN_START,
         user: user
     };
 };
 
-export const loginSuccess = (user: ILogin) => {
+export const loginSuccess = (user: IUser) => {
     return {
         type: actionTypes.LOGIN_SUCCESS,
         user: user
@@ -134,5 +134,42 @@ export const setResetRedirectPath = (path: string) => {
     return {
         type: actionTypes.SET_RESET_REDIRECT_PATH,
         path: path
+    };
+};
+
+export const updateAccountStart = (user: IUser) => {
+    return {
+        type: actionTypes.UPDATE_ACCOUNT_START
+    };
+};
+
+export const updateAccountSuccess = (user: IUser) => {
+    return {
+        type: actionTypes.UPDATE_ACCOUNT_SUCCESS,
+        user: user
+    };
+};
+
+export const updateAccountFail = () => {
+    return {
+        type: actionTypes.UPDATE_ACCOUNT_FAIL,
+    };
+};
+
+export const updateAccount: Function = (email: string, password: string, name: string) => {
+    return (dispatch: AppDispatch) => {
+        const updateAccountData = {
+            email: email,
+            password: password,
+            name: name
+        };
+
+        if (updateAccountData.email !== '' && updateAccountData.password !== '' && updateAccountData.name !== '') {
+            dispatch(updateAccountStart(updateAccountData));
+            dispatch(updateAccountSuccess(updateAccountData));
+        }
+        else {
+            dispatch(updateAccountFail());
+        } 
     };
 };

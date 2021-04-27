@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { IBet } from '../../shared/interfaces';
 import { updateObject } from '../../shared/utility';
 import * as actionTypes from '../actions/actionTypes';
+import { toast } from 'react-toastify';
 
 interface ISaved {
     saved: Array<IBet>,
@@ -18,7 +19,7 @@ const initialState: ISaved = {
 const saveBets = (state: ISaved , action: AnyAction) => {
     const prevState = [...state.saved];
     const newState = prevState.concat(action.bets);
-    alert('Comprado com sucesso.');
+    toast.success('Comprado com sucesso.');
 
     return updateObject( state, {
         saved: newState

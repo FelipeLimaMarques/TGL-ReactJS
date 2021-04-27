@@ -32,9 +32,6 @@ export const checkValidity = ( value: string, rules: IRules ): boolean => {
         isValid = pattern.test( value ) && isValid;
     }
 
-    console.log('[Value] ', value)
-    console.log('[isValid] ', isValid);
-
     return isValid;
 }
 
@@ -59,4 +56,14 @@ export const randComplete = (arr: Array<any>, max: number, old: number, range: n
 
 export const formatToBRL = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(price);
+}
+
+export const updateControls = ( event: React.ChangeEvent<HTMLInputElement>, controlName: string, controls: any ) => {
+    return updateObject( controls, {
+        [controlName]: updateObject( controls[controlName], {
+            value: event.target.value,
+            valid: checkValidity( event.target.value, controls[controlName].validation ),
+            touched: true
+        } )
+    } );
 }

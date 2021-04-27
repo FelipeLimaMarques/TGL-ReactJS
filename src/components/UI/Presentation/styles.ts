@@ -21,6 +21,7 @@ export const H2 = styled.h2`
     font-size: 4em;
     font-style: italic;
     font-weight: bold;
+    color: #707070;
 
     @media (max-width: 768px) {
         font-size: 2.5em;
@@ -31,6 +32,7 @@ export const H1 = styled.h1`
     font-size: 5em;
     font-style: italic;
     font-weight: bold;
+    color: #707070;
 
     @media (max-width: 768px) {
         font-size: 3em;
@@ -44,6 +46,7 @@ export const P = styled.p`
     padding: 7px 60px;
     margin: 20px 0 5px 0;
     border-radius: 100px;
+    color: #707070;
 
     @media (max-width: 768px) {
         font-size: 1em;

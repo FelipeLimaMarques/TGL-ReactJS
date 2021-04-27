@@ -51,6 +51,7 @@ export const BoldH2 = styled.h2`
     font-weight: bold;
     margin-right: 45px;
     white-space: nowrap;
+    color: #707070;
 
     @media (max-width: 768px) {
         margin: 0;
@@ -60,6 +61,7 @@ export const BoldH2 = styled.h2`
 export const P = styled.p`
     font-size: 1em;
     margin-right: 10px;
+    color: #707070;
 
     @media (max-width: 768px) {
         margin: 0;

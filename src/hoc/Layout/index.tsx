@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import Header from '../../components/UI/Header/index';
 import Footer from '../../components/UI/Footer/index';

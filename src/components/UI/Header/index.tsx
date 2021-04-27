@@ -31,7 +31,7 @@ const Header: React.FC<IProps> = props => {
                 {showHome}
             </TitleHomeWrapper>
             <NavWrapper>
-                <StyledLink to="#" noArrow fontSize="1.2em">Account</StyledLink>
+                <StyledLink to="/account" noArrow fontSize="1.2em">Account</StyledLink>
                 <StyledLink to="/logout" exact fontSize="1.2em" arrowSize="25px">Log Out</StyledLink>
             </NavWrapper>
         </HeaderDiv>
