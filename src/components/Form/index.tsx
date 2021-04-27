@@ -23,7 +23,6 @@ interface IProps {
     buttonText: string,
 }
 
-
 const Form: React.FC<IProps> = props => {
     const formElementsArray: Array<FormElement> = [];
     for ( let key in props.controls ) {
@@ -39,6 +38,7 @@ const Form: React.FC<IProps> = props => {
                         type={formInput.config.elementConfig.type}
                         placeholder={formInput.config.elementConfig.placeholder}
                         value={formInput.config.value}
+                        isValid={formInput.config.valid}
                         onChange={( event: ChangeEvent<HTMLInputElement> ) => props.inputChangedHandler( event, formInput.id )}
                     />
     ))

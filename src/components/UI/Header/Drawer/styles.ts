@@ -1,35 +1,16 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-const Open = keyframes`
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0)
-    }
-`
-
-const Close = keyframes`
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%))
-    }
-`
-
-export const Container = styled.div<{show:boolean}>`
+export const Container = styled.div<{show: boolean}>`
     position: fixed;
+    left: 0;
+    top: 0;
     height: 100%;
     width: 50%;
-    
-    display: ${props => props.show ? 'flex' : 'none'};
-    flex-direction: column;
     background-color: #F7F7F7;
-    z-index: 100;
-    
-    animation: ${props => props.show ? Open : Close} 0.3s ease-out;
+    z-index: 100;    
+    transition: transform 0.3s ease-out;
+    transform: ${props => props.show ? 'translateX(0)' : 'translateX(-100%)'};
 `
 
 export const Div = styled.header`
@@ -75,4 +56,10 @@ export const DrawerLink = styled(NavLink)`
     text-decoration: none;
     font-size: 1.4em;
     font-weight: bold;
+`
+
+export const ActiveLink = styled(DrawerLink)`
+    background-color: #D1D1D1;
+    border-color: #D1D1D1;
+    filter: brightness(0.95);
 `

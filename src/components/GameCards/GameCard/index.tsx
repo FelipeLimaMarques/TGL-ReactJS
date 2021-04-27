@@ -12,7 +12,8 @@ interface IProps {
     color: string,
     numbers: Array<number>,
     name: string,
-    price: number
+    price: number,
+    date: Date
 }
 
 const GameCard: React.FC<IProps> = props => {
@@ -21,7 +22,10 @@ const GameCard: React.FC<IProps> = props => {
             <Line color={props.color} />
             <InfoWrapper>
                 <Numbers>{props.numbers.join(', ')}</Numbers>
-                <Span>30/11/2021 - ({formatToBRL(props.price)})</Span>
+                <Span>
+                    {props.date.getDate().toString().padStart(2, '0')}
+                    /{props.date.getMonth().toString().padStart(2, '0')}
+                    /{props.date.getFullYear().toString().padStart(2, '0')} - ({formatToBRL(props.price)})</Span>
                 <GameName color={props.color}>{props.name}</GameName>
             </InfoWrapper>
         </Container>

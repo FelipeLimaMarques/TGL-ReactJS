@@ -108,11 +108,12 @@ export const FormWrapper = styled.form<IProps>`
     }
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{isValid: boolean}>`
     width: 100%;
     height: 64px;
     border: none;
-    border-bottom: 2px solid #EBEBEB;
+    border-bottom: 2px solid ${props => props.isValid ? '#EBEBEB' : 'red'};
+    ${props => !props.isValid && 'color: red'};
     outline: none;
     margin: 0;
     font-size: 1.3em;
@@ -122,16 +123,16 @@ export const Input = styled.input`
     
     &::placeholder {
         font-size: 0.8em;
-        color: #9D9D9D;
+        color: ${props => props.isValid ? '#9D9D9D' : 'red'};
     }
 
     &:focus {
-        color: #7ddcff;
-        border-color: #7ddcff;
+        color: ${props => props.isValid ? '#7ddcff' : 'red'};
+        border-color: ${props => props.isValid ? '#7ddcff' : 'red'};
         
         &::placeholder {
         font-size: 0.8em;
-        color: #7ddcff;
+        color: ${props => props.isValid ? '#7ddcff' : 'red'};
     }
     }
 `;

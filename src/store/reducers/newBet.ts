@@ -15,7 +15,8 @@ const initialState: INewBet = {
         numbers: [],
         price: 0,
         type: '',
-        color: ''
+        color: '',
+        date: new Date(Date.now())
     },
     totalPrice: 0,
 }
@@ -78,7 +79,8 @@ const completeNumbers = (state: INewBet, action: AnyAction) => {
 const addToCart = (state: INewBet, action: AnyAction) => {
     if (state.bet.numbers.length === action.maxNumber) {
         const bets = [...state.bets];
-        const newBets = bets.concat(action.bet);
+        const withDate = {...action.bet, date: new Date(Date.now())}
+        const newBets = bets.concat(withDate);
     
         return updateObject( state, {
             bets: newBets,
@@ -87,7 +89,8 @@ const addToCart = (state: INewBet, action: AnyAction) => {
                 numbers: [],
                 price: 0,
                 type: '',
-                color: ''
+                color: '',
+                date: new Date(Date.now())
             }
         })
     }

@@ -27,12 +27,13 @@ const Reset: React.FC = () => {
                 required: true,
                 isEmail: true
             },
-            valid: false,
+            valid: true,
             touched: false
         },
     })
 
     useEffect(() => {
+        window.scrollTo(0,0);
         authRedirectPath !== '/login' && dispatch(actions.setResetRedirectPath( '/login' ));
     }, []);
 

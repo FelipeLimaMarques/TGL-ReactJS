@@ -28,7 +28,7 @@ const Login: React.FC = () => {
                 required: true,
                 isEmail: true
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         password: {
@@ -42,12 +42,13 @@ const Login: React.FC = () => {
                 required: true,
                 minLength: 6
             },
-            valid: false,
+            valid: true,
             touched: false
         },
     });
 
     useEffect(() => {
+        window.scrollTo(0,0);
         authRedirectPath !== '/home' && dispatch(actions.setLoginRedirectPath( '/home' ));
     }, [])
 

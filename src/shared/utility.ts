@@ -32,6 +32,9 @@ export const checkValidity = ( value: string, rules: IRules ): boolean => {
         isValid = pattern.test( value ) && isValid;
     }
 
+    console.log('[Value] ', value)
+    console.log('[isValid] ', isValid);
+
     return isValid;
 }
 

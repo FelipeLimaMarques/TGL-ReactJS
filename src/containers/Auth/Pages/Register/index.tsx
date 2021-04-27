@@ -25,9 +25,8 @@ const Register: React.FC = props => {
             value: '',
             validation: {
                 required: true,
-                isEmail: false
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         email: {
@@ -41,7 +40,7 @@ const Register: React.FC = props => {
                 required: true,
                 isEmail: true
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         password: {
@@ -55,12 +54,13 @@ const Register: React.FC = props => {
                 required: true,
                 minLength: 6
             },
-            valid: false,
+            valid: true,
             touched: false
         },
     })
 
     useEffect(() => {
+        window.scrollTo(0,0);
         authRedirectPath !== '/login' && dispatch(actions.setRegisterRedirectPath( '/login' ));;
     }, [])
 

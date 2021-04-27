@@ -16,6 +16,7 @@ const GameCards: React.FC<IProps> = props => {
             name={game.type}
             color={game.color}
             price={game.price}
+            date={game.date}
         />
     ))
     return(

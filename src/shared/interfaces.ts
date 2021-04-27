@@ -27,7 +27,8 @@ export interface IBet {
     numbers: Array<number>,
     price: number,
     type: string,
-    color: string
+    color: string,
+    date: Date
 }
 
 export interface IRules {
