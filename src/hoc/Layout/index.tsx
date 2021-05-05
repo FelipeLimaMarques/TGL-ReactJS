@@ -7,7 +7,7 @@ import Drawer from '../../components/UI/Header/Drawer';
 import Main from './styles';
 
 const Layout: React.FC = props => {
-    const isAuthenticated = useAppSelector(state => state.auth.currentUser !== null);
+    const isAuthenticated = useAppSelector(state => state.auth.token !== null);
     const [showDrawer, setShowDrawer] = useState(false);
 
     const handleDrawerToggle: React.MouseEventHandler<HTMLElement> = () => {

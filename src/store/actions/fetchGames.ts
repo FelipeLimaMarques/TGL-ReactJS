@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axios';
 import { AppDispatch } from '../store';
 import { ITypes } from '../../shared/interfaces';
 
@@ -13,21 +13,21 @@ export const fetchGamesStart = () => {
 export const fetchGamesSuccess = (data: ITypes) => {
     return {
         type: actionTypes.FETCH_GAMES_SUCCESS,
-        payload: data
+        data
     };
 };
 
 export const fetchGamesFail = (error: Error) => {
     return {
         type: actionTypes.FETCH_GAMES_FAIL,
-        error: error
+        error
     };
 };
 
 export const fetchGames: Function = () => {
     return (dispatch: AppDispatch) => {
         dispatch(fetchGamesStart());
-        axios.get('games.json')
+        axios.get('/games')
             .then(res => {
                 dispatch(fetchGamesSuccess(res.data.types));
             })

@@ -1,4 +1,5 @@
 export interface IGame {
+    id: number,
     type: string,
     description: string,
     range: number,
@@ -22,10 +23,18 @@ export interface IUser {
 
 export interface IBet {
     numbers: Array<number>,
+    game_id: number
+}
+
+export interface IBetFormated {
+    numbers: string,
+    game_id: number,
     price: number,
-    type: string,
-    color: string,
-    date: Date
+    game: {
+        type: string,
+        color: string
+    },
+    created_at: string
 }
 
 export interface IRules {

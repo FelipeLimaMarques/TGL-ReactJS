@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppDispatch } from '../../hooks';
 import * as actions from '../../store/actions';
 import { formatToBRL } from '../../shared/utility';
-import { IBet } from '../../shared/interfaces';
+import { IBet, IGame } from '../../shared/interfaces';
 
 import StyledButton from '../UI/StyledButton';
 import deleteIcon from '../../assets/delete.png';
@@ -24,6 +24,7 @@ import {
 interface ICart {
     totalPrice: number,
     bets: Array<IBet>,
+    types: Array<IGame>,
     handle: React.MouseEventHandler<HTMLElement>
 }
 
@@ -35,19 +36,22 @@ const Cart: React.FC<ICart> = props => {
     let cartItems: JSX.Element | Array<JSX.Element> = <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <StyledSpan>Carrinho vazio.</StyledSpan>
     </div>;
-    hasItems && (cartItems = props.bets.map((bet: IBet, index: number) => (
+    hasItems && (cartItems = props.bets.map((bet: IBet, index: number) => {
+        const game = props.types.find(game => game.id === bet.game_id)
+        
+        return(
             <GameCard key={index}>
-                <DeleteButton onClick={() => dispatch(actions.removeFromCart(index, bet.price))}><DeleteIcon src={deleteIcon}/></DeleteButton>
-                <Line color={bet.color}/>
+                <DeleteButton onClick={() => dispatch(actions.removeFromCart(index, game!.price))}><DeleteIcon src={deleteIcon}/></DeleteButton>
+                <Line color={game!.color}/>
                 <div style={{width: '100%'}}>
-                    <Numbers>{bet.numbers.join(', ')}</Numbers>
+                    <Numbers>{bet.numbers}</Numbers>
                     <NamePriceWrapper>
-                        <GameName color={bet.color}>{bet.type}</GameName>
-                        <Price>{formatToBRL(bet.price)}</Price>
+                        <GameName color={game!.color}>{game!.type}</GameName>
+                        <Price>{formatToBRL(game!.price)}</Price>
                     </NamePriceWrapper>
                 </div>
             </GameCard>
-        )));
+        )}));
 
     return (
         <React.Fragment>

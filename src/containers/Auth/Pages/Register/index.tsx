@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions/index';
 import Presentation from '../../../../components/UI/Presentation';
@@ -8,12 +8,14 @@ import { IAnyProperty } from '../../../../shared/interfaces';
 import { updateControls } from '../../../../shared/utility';
 
 import Form from '../../../../components/Form/index';
+import Loading from '../../../../components/UI/Loading';
 
 const Register: React.FC = props => {
     const dispatch = useAppDispatch();
-    const isAuthenticated = useAppSelector(state => state.auth.currentUser !== null);
+    const isAuthenticated = useAppSelector(state => state.auth.token !== null);
     const authRedirectPath = useAppSelector(state => state.auth.authRedirectPath);
-    const history = useHistory();
+    const isLoading = useAppSelector(state => state.auth.loading);
+    const shouldRedirect = useAppSelector(state => state.auth.redirect);
 
     const [controls, setControls] = useState<IAnyProperty>({
         name: {
@@ -72,15 +74,19 @@ const Register: React.FC = props => {
     const submitHandler: React.FormEventHandler<HTMLFormElement> = ( event ) => {
         event.preventDefault();
         dispatch(actions.register(controls.email.value, controls.password.value, controls.name.value));
-        history.push('/login');
     }
 
     let authRedirect: JSX.Element | null = null;
     isAuthenticated && (authRedirect = <Redirect to={authRedirectPath} />);
+    shouldRedirect && (authRedirect = <Redirect to="/login" />);
+
+    let loading: JSX.Element | null = null;
+    isLoading && (loading = <Loading />);
 
     return (
         <StyledDiv>
             {authRedirect}
+            {loading}
             <Presentation />
             <Form 
                 submitHandler={submitHandler}

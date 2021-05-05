@@ -9,6 +9,7 @@ interface IProps {
     range: number,
     maxLength: number,
     selected: Array<number>,
+    id: number,
     clicked: Function,
     color: string
 }
@@ -29,7 +30,7 @@ const GameNumbers: React.FC<IProps> = props => {
                     key={index}
                     color={props.color}
                     isSelected={isSelected}
-                    clicked={() => props.clicked(number, props.maxLength)}
+                    clicked={() => props.clicked(number, props.maxLength, props.id)}
                     >{String(number).padStart(2, '0')}</GameNumber>
             }
             )}

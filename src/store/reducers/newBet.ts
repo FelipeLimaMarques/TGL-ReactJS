@@ -5,7 +5,10 @@ import { IBet } from '../../shared/interfaces';
 import { toast } from 'react-toastify';
 
 interface INewBet {
-    bets: Array<IBet>,
+    bets: Array<{
+        numbers: string,
+        game_id: number
+    }>,
     bet: IBet,
     totalPrice: number,
 }
@@ -14,10 +17,7 @@ const initialState: INewBet = {
     bets: [],
     bet: {
         numbers: [],
-        price: 0,
-        type: '',
-        color: '',
-        date: new Date(Date.now())
+        game_id: 0,
     },
     totalPrice: 0,
 }
@@ -38,7 +38,10 @@ const addNumber = (state: INewBet, action: AnyAction) => {
         aux = aux.sort((a, b) => a - b);
 
         return updateObject( state, {
-            bet: {numbers: aux}
+            bet: {
+                numbers: aux,
+                game_id: action.id
+            }
         })
     }
 }
@@ -48,13 +51,19 @@ const removeNumber = (state: INewBet, action: AnyAction) => {
     aux = aux.filter((current) => current !== action.number);
 
     return updateObject( state, {
-        bet: {numbers: aux}
+        bet: {
+            numbers: aux,
+            game_id: action.id
+        }
     })
 }
 
 const clearNumbers = (state: INewBet, action: AnyAction) => {
     return updateObject( state, {
-        bet: {numbers: []}
+        bet: {
+            numbers: [],
+            game_id: action.id
+        }
     })
 }
 
@@ -71,7 +80,8 @@ const completeNumbers = (state: INewBet, action: AnyAction) => {
         
         return updateObject( state, {
             bet: {
-                numbers: aux
+                numbers: aux,
+                game_id: action.id
             }
         })
     }
@@ -80,18 +90,15 @@ const completeNumbers = (state: INewBet, action: AnyAction) => {
 const addToCart = (state: INewBet, action: AnyAction) => {
     if (state.bet.numbers.length === action.maxNumber) {
         const bets = [...state.bets];
-        const withDate = {...action.bet, date: new Date(Date.now())}
-        const newBets = bets.concat(withDate);
+        const stringfied = { ...action.bet, numbers: action.bet.numbers.join(', ')}
+        const newBets = bets.concat(stringfied);
     
         return updateObject( state, {
             bets: newBets,
-            totalPrice: state.totalPrice + action.bet.price,
+            totalPrice: state.totalPrice + action.price,
             bet: {
                 numbers: [],
-                price: 0,
-                type: '',
-                color: '',
-                date: new Date(Date.now())
+                game_id: 0,
             }
         })
     }

@@ -9,6 +9,7 @@ interface IG {
 
 const initialState: IG = {
     game: {
+        id: 0,
         type: 'Loading...',
         description: 'Loading...',
         range: 0,
@@ -22,13 +23,14 @@ const initialState: IG = {
 const setCurrentGame = (state: IG , action: AnyAction) => {
     return updateObject( state, {
         game: {
-            type: action.payload.type,
-            description: action.payload.description,
-            range: action.payload.range,
-            price: action.payload.price,
-            'max-number': action.payload['max-number'],
-            color: action.payload.color,
-            'min-cart-value': action.payload['min-cart-value']
+            id: action.data.id,
+            type: action.data.type,
+            description: action.data.description,
+            range: action.data.range,
+            price: action.data.price,
+            'max-number': action.data['max-number'],
+            color: action.data.color,
+            'min-cart-value': action.data['min-cart-value']
         }
     } );
 };
@@ -36,6 +38,7 @@ const setCurrentGame = (state: IG , action: AnyAction) => {
 const clearCurrentGame = (state: IG , action: AnyAction) => {
     return updateObject( state, {
         game: {
+            id: 0,
             type: 'Loading...',
             description: 'Loading...',
             range: 0,

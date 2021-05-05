@@ -11,7 +11,7 @@ import Form from '../../../../components/Form/index';
 
 const Login: React.FC = () => {
     const dispatch = useAppDispatch();
-    const isAuthenticated = useAppSelector(state => state.auth.currentUser !== null);
+    const isAuthenticated = useAppSelector(state => state.auth.token !== null);
     const authRedirectPath = useAppSelector(state => state.auth.loginRedirectPath);
 
     const [controls, setControls] = useState<IAnyProperty>({
@@ -47,6 +47,7 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         window.scrollTo(0,0);
+        dispatch(actions.authRedirectSetFalse());
         authRedirectPath !== '/home' && dispatch(actions.setLoginRedirectPath( '/home' ));
     }, [])
 

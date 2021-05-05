@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions';
 import { IGame } from '../../../../shared/interfaces';
@@ -10,6 +10,7 @@ import GameButtons from '../../../../components/GameButtons';
 import GameNumbers from '../../../../components/GameNumbers';
 import Cart from '../../../../components/Cart';
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
+import Loading from '../../../../components/UI/Loading';
 
 import {
     Container,
@@ -32,7 +33,8 @@ const Newbet: React.FC = () => {
     const selected = useAppSelector(state => state.newBet.bet);
     const bets = useAppSelector(state => state.newBet.bets);
     const totalPrice = useAppSelector(state => state.newBet.totalPrice);
-    const history = useHistory();
+    const isLoading = useAppSelector(state => state.savedBets.loading);
+    const shouldRedirect = useAppSelector(state => state.savedBets.redirect);
 
     useEffect(() => {
         window.scrollTo(0,0);
@@ -40,7 +42,7 @@ const Newbet: React.FC = () => {
         return () => {
             dispatch(actions.clearCart());
         };
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         const type = types[0];
@@ -52,29 +54,35 @@ const Newbet: React.FC = () => {
 
     const setCurrent = (game: IGame) => {
         const newCurrent = types.find((current: IGame) => current.type === game.type);
-        dispatch(actions.clearNumbers());
+        dispatch(actions.clearNumbers(game.id));
         dispatch(actions.setCurrentGame(newCurrent));
     }
 
-    const handleSelectedNumber = (number: number, maxLength: number) => {
-        dispatch(actions.addNumber(number, maxLength));
+    const handleSelectedNumber = (number: number, maxLength: number, id: number) => {
+        dispatch(actions.addNumber(number, maxLength, id));
     }
 
     const handleBuy: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
         
         if (totalPrice >= 30) {
-            dispatch(actions.saveBets(bets));
-            dispatch(actions.clearCart());
-            history.push('/home');
+            dispatch(actions.saveBet(bets));
         }
         else {
             toast.warn('Valor mínimo de compra: R$30,00.');
         }
     }
+
+    let redirect: JSX.Element | null = null;
+    shouldRedirect && (redirect = <Redirect to="/home" />);
+
+    let loading: JSX.Element | null = null;
+    isLoading && (loading = <Loading />);
     
     return(
         <StyledDiv>
+            {redirect}
+            {loading}
             <Container>
                 <InfoWrapper>
                     <NormalH2><BoldSpan>NEW BET</BoldSpan> FOR {game.type.toUpperCase()}</NormalH2>
@@ -84,11 +92,11 @@ const Newbet: React.FC = () => {
                     </GamesWrapper>
                     <BoldSpan>Fill your bet</BoldSpan>
                     <p style={{color: '#707070'}}>{game.description}</p>
-                    <GameNumbers range={game.range} maxLength={game['max-number']} selected={selected.numbers} color={game.color} clicked={handleSelectedNumber}/>
+                    <GameNumbers range={game.range} maxLength={game['max-number']} id={game.id} selected={selected.numbers} color={game.color} clicked={handleSelectedNumber}/>
                     <ButtonsRow>
                         <ButtonsWrapper>
-                            <ButtonBorder onClick={() => dispatch(actions.completeNumbers(game['max-number'], game.range))}>Complete game</ButtonBorder>
-                            <ButtonBorder onClick={() => dispatch(actions.clearNumbers())}>Clear game</ButtonBorder>
+                            <ButtonBorder onClick={() => dispatch(actions.completeNumbers(game['max-number'], game.range, game.id))}>Complete game</ButtonBorder>
+                            <ButtonBorder onClick={() => dispatch(actions.clearNumbers(game.id))}>Clear game</ButtonBorder>
                         </ButtonsWrapper>
                         <AddToCartButton onClick={() => dispatch(actions.addToCart(selected, game))}><Icon src={cart}/>Add to cart</AddToCartButton>
                     </ButtonsRow>
@@ -97,6 +105,7 @@ const Newbet: React.FC = () => {
                     <Cart
                         totalPrice={totalPrice}
                         bets={bets}
+                        types={types}
                         handle={handleBuy}
                         />
                 </CartWrapper>

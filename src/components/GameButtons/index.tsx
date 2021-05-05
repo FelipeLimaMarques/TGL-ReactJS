@@ -14,7 +14,6 @@ const GameButtons: React.FC<IProps> = props => {
     let buttons: JSX.Element = <p>Loading...</p>;
     if (props.types) buttons = props.types.map((game: IGame, index: number) => {
         if (props.current?.type === game.type) return (
-            <React.Fragment>
             <GameButton
                 key={index}
                 clicked={() => props.clicked(game)}
@@ -22,10 +21,8 @@ const GameButtons: React.FC<IProps> = props => {
                 current={true}
                 color={game.color}
             />
-        </React.Fragment>
         );
         return (
-        <React.Fragment>
             <GameButton
                 key={index}
                 clicked={() => props.clicked(game)}
@@ -33,7 +30,6 @@ const GameButtons: React.FC<IProps> = props => {
                 current={false}
                 color={game.color}
             />
-        </React.Fragment>
     )});
 
     return (

@@ -4,8 +4,8 @@ import {
 } from './styles';
 
 interface IProps {
-    clicked: React.MouseEventHandler<HTMLDivElement>,
-    show: boolean
+    clicked?: React.MouseEventHandler<HTMLDivElement>,
+    show?: boolean
 }
 
 const Backdrop: React.FC<IProps> = props => {

@@ -1,45 +1,49 @@
 import * as actionTypes from '../actions/actionTypes';
 import { AnyAction } from 'redux';
 import { updateObject } from '../../shared/utility';
-import { IUser } from '../../shared/interfaces';
 import { toast } from 'react-toastify';
 
 interface IAuth {
-    users: Array<IUser>,
-    valid: boolean,
-    currentUser: IUser | null,
+    token: string | null,
     loginRedirectPath: string,
     registerRedirectPath: string,
     resetRedirectPath: string,
+    error: string | null,
+    loading: boolean,
+    redirect: boolean
 }
 
 const initialState: IAuth = {
-    users: [],
-    valid: true,
-    currentUser: null,
+    token: null,
     loginRedirectPath: "/home",
     registerRedirectPath: "/login",
     resetRedirectPath: "/login",
+    error: null,
+    loading: false,
+    redirect: false
 }
 
 const loginStart = ( state: IAuth, action: AnyAction ) => {
-    const users = [...state.users];
-
-    return users.some(user => user.email === action.user.email && user.password === action.user.password)
-        ? state
-        : updateObject( state, { valid: false });
+    return updateObject( state, {
+        token: null,
+        loading: true
+    });
 };
 
 const loginSuccess = (state: IAuth, action: AnyAction) => {
-    const users = [...state.users];
-    const foundUser = users.filter(user => user.email === action.user.email && user.password === action.user.password)[0];
+    toast.success('Logado com sucesso.');
 
-    return !state.valid 
-        ? loginFail(state, action)
-        : updateObject( state, { 
-            currentUser: foundUser,
-            error: null,
-        } );
+    return updateObject( state, {
+        token: action.token,
+        loading: false
+    });
+};
+
+const checkAuthStateSuccess = (state: IAuth, action: AnyAction) => {
+    return updateObject( state, {
+        token: action.token,
+        loading: false
+    });
 };
 
 const loginFail = (state: IAuth, action: AnyAction) => {
@@ -47,11 +51,13 @@ const loginFail = (state: IAuth, action: AnyAction) => {
 
     return updateObject( state, {
         valid: true,
+        loading: false,
+        error: action.error
     });
 };
 
 const logout = (state: IAuth, action: AnyAction) => {
-    return updateObject(state, { currentUser: null });
+    return updateObject(state, { token: null, loading: false });
 };
 
 const setLoginRedirectPath = (state: IAuth, action: AnyAction) => {
@@ -59,35 +65,27 @@ const setLoginRedirectPath = (state: IAuth, action: AnyAction) => {
 }
 
 const registerStart = ( state: IAuth, action: AnyAction ) => {
-    const users = [...state.users];
-    let result: boolean = true;
-
-    if (users.length > 0) {
-        result = users.some(user => user.email === action.user.email || user.name === action.user.name)
-    }
-
-    return result
-        ? state
-        : updateObject( state, { valid: false });
+    return updateObject( state, {
+        error: null,
+        loading: true
+    });
 };
 
 const registerSuccess = (state: IAuth, action: AnyAction) => {
-    const users = [...state.users];
-    const newUsers = users.concat(action.user);
-    state.valid && toast.success('Registration completed.');
+    toast.success('Registrado com sucesso.');
 
-    return !state.valid 
-        ? registerFail(state, action)
-        : updateObject( state, {
-            users: newUsers,
-        } );
+    return updateObject( state, {
+        loading: false,
+        redirect: true
+    });
 };
 
 const registerFail = (state: IAuth, action: AnyAction) => {
-    toast.error('Registration failed.');
+    toast.error('Registro não pôde ser efetuado.');
 
     return updateObject( state, {
-        valid: true,
+        error: action.error,
+        loading: false
     });
 };
 
@@ -96,79 +94,100 @@ const setRegisterRedirectPath = (state: IAuth, action: AnyAction) => {
 }
 
 const resetStart = ( state: IAuth, action: AnyAction ) => {
-    const users = [...state.users];
-    let result: boolean = true;
-
-    if (users.length > 0) {
-        result = users.some(user => user.email === action.email);
-    }
-
-    return result
-        ? state
-        : updateObject( state, { valid: false });
+    return updateObject( state, {
+        error: null,
+        loading: true
+    });
 };
 
 const resetSuccess = (state: IAuth, action: AnyAction) => {
-    state.valid && toast.success('E-mail enviado.');
+    toast.success('E-mail enviado.');
     
-    return !state.valid
-        ? resetFail(state, action)
-        : state
+    return updateObject( state, {
+        loading: false,
+        redirect: true
+    });
 };
 
 const resetFail = (state: IAuth, action: AnyAction) => {
     toast.error('E-mail não encontrado.');
 
     return updateObject( state, {
-        valid: true,
+        error: action.error,
+        loading: false
     });
 };
+
+const authRedirectSetFalse = (state: IAuth, action: AnyAction) => {
+    return updateObject( state, {
+        redirect: false
+    })
+}
 
 const setResetRedirectPath = (state: IAuth, action: AnyAction) => {
     return updateObject(state, { resetRedirectPath: action.path })
 }
 
+const updatePasswordStart = ( state: IAuth, action: AnyAction ) => {
+    return updateObject( state, {
+        error: null,
+        loading: true
+    });
+};
+
+const updatePasswordSuccess = (state: IAuth, action: AnyAction) => {
+    toast.success('Senha alterada com sucesso.');
+    
+    return updateObject( state, {
+        loading: false,
+        redirect: true
+    });
+};
+
+const updatePasswordFail = (state: IAuth, action: AnyAction) => {
+    toast.error('Token inválido.');
+
+    return updateObject( state, {
+        error: action.error,
+        loading: false
+    });
+};
+
 const updateAccountStart = ( state: IAuth, action: AnyAction ) => {
-    const users = [...state.users];
-    const current = state.currentUser;
-    let result: boolean = true;
-
-    if (users.length > 0) {
-        result = users.some(user => user.email === current?.email
-            && user.name === current?.name
-            && user.password === current?.password);
-    }
-
-    return result
-        ? state
-        : updateObject( state, { valid: false });
+    return updateObject( state, {
+        error: null,
+        loading: true
+    });
 };
 
 const updateAccountSuccess = (state: IAuth, action: AnyAction) => {
-    const users = [...state.users];
-    const current = state.currentUser;
-    const index = users.findIndex(user => user.email === current?.email);
-    users.splice(index, 1, action.user);
-    state.valid && toast.success('Dados atualizados.');
+    toast.success('Dados atualizados.');
 
-    return !state.valid 
-        ? updateAccountFail(state, action)
-        : updateObject( state, {
-            users: users,
-            currentUser: action.user
-        } );
+    return updateObject( state, {
+        loading: false,
+        redirect: true
+    });
 };
 
 const updateAccountFail = (state: IAuth, action: AnyAction) => {
     toast.error('Falha ao atualizar os dados.');
 
     return updateObject( state, {
-        valid: true,
+        error: action.error,
+        loading: false
     });
 };
 
+const checkAuthState = (state: IAuth, action: AnyAction) => {
+    return updateObject( state, {
+        error: null,
+        loading: true
+    });
+}
+
 const authReducer = ( state = initialState, action: AnyAction) => {
     switch ( action.type ) {
+        case actionTypes.AUTH_REDIRECT_SET_FALSE: return authRedirectSetFalse(state, action);
         case actionTypes.LOGIN_START: return loginStart(state, action);
         case actionTypes.LOGIN_SUCCESS: return loginSuccess(state, action);
         case actionTypes.LOGIN_FAIL: return loginFail(state, action);
@@ -178,6 +197,9 @@ const authReducer = ( state = initialState, action: AnyAction) => {
         case actionTypes.REGISTER_SUCCESS: return registerSuccess(state, action);
         case actionTypes.REGISTER_FAIL: return registerFail(state, action);
         case actionTypes.SET_REGISTER_REDIRECT_PATH: return setRegisterRedirectPath(state,action);
+        case actionTypes.UPDATE_PASSWORD_START: return updatePasswordStart(state, action);
+        case actionTypes.UPDATE_PASSWORD_SUCCESS: return updatePasswordSuccess(state, action);
+        case actionTypes.UPDATE_PASSWORD_FAIL: return updatePasswordFail(state, action);
         case actionTypes.RESET_START: return resetStart(state, action);
         case actionTypes.RESET_SUCCESS: return resetSuccess(state, action);
         case actionTypes.RESET_FAIL: return resetFail(state, action);
@@ -185,6 +207,8 @@ const authReducer = ( state = initialState, action: AnyAction) => {
         case actionTypes.UPDATE_ACCOUNT_START: return updateAccountStart(state, action);
         case actionTypes.UPDATE_ACCOUNT_SUCCESS: return updateAccountSuccess(state, action);
         case actionTypes.UPDATE_ACCOUNT_FAIL: return updateAccountFail(state, action);
+        case actionTypes.CHECK_AUTH_STATE: return checkAuthState(state, action);
+        case actionTypes.CHECK_AUTH_STATE_SUCCESS: return checkAuthStateSuccess(state, action);
         default: return state;
     }
 

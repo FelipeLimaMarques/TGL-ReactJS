@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Form from '../../../../components/Form';
 import { IAnyProperty } from '../../../../shared/interfaces';
 import { updateControls } from '../../../../shared/utility';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions';
-import { toast } from 'react-toastify';
-
 
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
+import Loading from '../../../../components/UI/Loading';
 
 import {
     Container,
@@ -16,7 +15,8 @@ import {
 
 const Account: React.FC = () => {
     const dispatch = useAppDispatch();
-    const history = useHistory();
+    const isLoading = useAppSelector(state => state.auth.loading);
+    const shouldRedirect = useAppSelector(state => state.auth.redirect);
 
     const [controls, setControls] = useState<IAnyProperty>({
         name: {
@@ -70,11 +70,18 @@ const Account: React.FC = () => {
     const submitHandler: React.FormEventHandler<HTMLFormElement> = ( event ) => {
         event.preventDefault();
         dispatch(actions.updateAccount(controls.email.value, controls.password.value, controls.name.value));
-        history.push('/home');
     }
+
+    let redirect: JSX.Element | null = null;
+    shouldRedirect && (redirect = <Redirect to="/home" />)
+
+    let loading: JSX.Element | null = null;
+    isLoading && (loading = <Loading />);
     
     return(
         <StyledDiv>
+            {redirect}
+            {loading}
             <Container>
                 <Form 
                     submitHandler={submitHandler}

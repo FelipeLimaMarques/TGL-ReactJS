@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { Redirect } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../../../hooks';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useAppSelector, useAppDispatch, useQuery } from '../../../../hooks';
 import * as actions from '../../../../store/actions/index';
 import Presentation from '../../../../components/UI/Presentation';
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
@@ -10,24 +10,40 @@ import { updateControls } from '../../../../shared/utility';
 import Form from '../../../../components/Form/index';
 import Loading from '../../../../components/UI/Loading';
 
-const Reset: React.FC = () => {
+const PassUpdate: React.FC = () => {
     const dispatch = useAppDispatch();
     const isAuthenticated = useAppSelector(state => state.auth.token !== null);
     const authRedirectPath = useAppSelector(state => state.auth.authRedirectPath);
     const isLoading = useAppSelector(state => state.auth.loading);
     const shouldRedirect = useAppSelector(state => state.auth.redirect);
+    const history = useHistory();
+    const query = useQuery();
+    const token = query.get('token');
 
     const [controls, setControls] = useState<IAnyProperty>({
-        email: {
+        token: {
             elementType: 'input',
             elementConfig: {
-                type: 'email',
-                placeholder: 'Email'
+                type: 'text',
+                placeholder: 'Token'
+            },
+            value: token,
+            validation: {
+                required: true,
+            },
+            valid: true,
+            touched: false
+        },
+        password: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'password',
+                placeholder: 'Password'
             },
             value: '',
             validation: {
                 required: true,
-                isEmail: true
+                minLength: 6
             },
             valid: true,
             touched: false
@@ -36,7 +52,6 @@ const Reset: React.FC = () => {
 
     useEffect(() => {
         window.scrollTo(0,0);
-        dispatch(actions.authRedirectSetFalse());
         authRedirectPath !== '/login' && dispatch(actions.setResetRedirectPath( '/login' ));
     }, []);
 
@@ -47,7 +62,7 @@ const Reset: React.FC = () => {
 
     const submitHandler: React.FormEventHandler<HTMLFormElement> = ( event ) => {
         event.preventDefault();
-        dispatch(actions.reset(controls.email.value));
+        dispatch(actions.updatePassword(controls.token.value, controls.password.value));
     }
 
     let authRedirect: JSX.Element | null = null;
@@ -56,7 +71,6 @@ const Reset: React.FC = () => {
 
     let loading: JSX.Element | null = null;
     isLoading && (loading = <Loading />);
-
     return (
         <StyledDiv>
             {authRedirect}
@@ -66,13 +80,13 @@ const Reset: React.FC = () => {
                 submitHandler={submitHandler}
                 inputChangedHandler={inputChangedHandler}
                 controls={controls}
-                height="170px"
+                height="250px"
                 title="Reset password"
-                buttonText="Send Link"
+                buttonText="Update"
                 isLogin={false}
             />
         </StyledDiv>
     );
 }
 
-export default Reset;
+export default PassUpdate;

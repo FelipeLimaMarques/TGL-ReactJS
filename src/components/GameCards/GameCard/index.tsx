@@ -10,22 +10,23 @@ import {
 
 interface IProps {
     color: string,
-    numbers: Array<number>,
+    numbers: string,
     name: string,
     price: number,
-    date: Date
+    date: string
 }
 
 const GameCard: React.FC<IProps> = props => {
+    const newDate = new Date(props.date)
     return (
         <Container>
             <Line color={props.color} />
             <InfoWrapper>
-                <Numbers>{props.numbers.join(', ')}</Numbers>
+                <Numbers>{props.numbers}</Numbers>
                 <Span>
-                    {props.date.getDate().toString().padStart(2, '0')}
-                    /{props.date.getMonth().toString().padStart(2, '0')}
-                    /{props.date.getFullYear().toString().padStart(2, '0')} - ({formatToBRL(props.price)})</Span>
+                    {newDate.getDate().toString().padStart(2, '0')}
+                    /{newDate.getMonth().toString().padStart(2, '0')}
+                    /{newDate.getFullYear().toString().padStart(2, '0')} - ({formatToBRL(props.price)})</Span>
                 <GameName color={props.color}>{props.name}</GameName>
             </InfoWrapper>
         </Container>

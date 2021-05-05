@@ -5,8 +5,12 @@ export {
     register,
     setRegisterRedirectPath,
     reset,
+    authRedirectSetFalse,
     setResetRedirectPath,
-    updateAccount
+    updateAccount,
+    checkAuthState,
+    checkAuthStateSuccess,
+    updatePassword
 } from './auth';
 export {
     fetchGames
@@ -25,7 +29,9 @@ export {
     clearCart
 } from './newBet';
 export {
-    saveBets,
+    savedBetsRedirectSetFalse,
+    saveBet,
+    fetchBets,
     filterBets,
-    unfilterBets
+    unfilterBets,
 } from './savedBets';

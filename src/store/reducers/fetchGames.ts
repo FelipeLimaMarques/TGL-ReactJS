@@ -9,6 +9,7 @@ interface IFetched extends ITypes {
 
 const initialState: IFetched = {
     types: [{
+        id: 0,
         type: 'Loading...',
         description: 'Loading...',
         range: 0,
@@ -23,13 +24,12 @@ const initialState: IFetched = {
 const fetchGamesStart = ( state: IFetched, action: AnyAction ) => {
     return updateObject( state, {
         error: null,
-        loading: true
     } );
 };
 
 const fetchGamesSuccess = (state: IFetched, action: AnyAction) => {
     return updateObject( state, { 
-        types: action.payload,
+        types: action.data,
      } );
 };
 
