@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import Form from '../../../../components/Form';
 import { IAnyProperty } from '../../../../shared/interfaces';
@@ -15,8 +15,9 @@ import {
 
 const Account: React.FC = () => {
     const dispatch = useAppDispatch();
-    const isLoading = useAppSelector(state => state.auth.loading);
-    const shouldRedirect = useAppSelector(state => state.auth.redirect);
+    const isLoading = useAppSelector(state => state.updateUser.loading);
+    const shouldRedirect = useAppSelector(state => state.updateUser.redirect);
+    const userData = useAppSelector(state => state.updateUser.userData);
 
     const [controls, setControls] = useState<IAnyProperty>({
         name: {
@@ -61,6 +62,26 @@ const Account: React.FC = () => {
             touched: false
         },
     });
+
+    useEffect(() => {
+        dispatch(actions.fetchUserData());
+    }, []);
+
+    useEffect(() => {
+        setControls(prevState => {
+            return {
+                ...prevState,
+                name: {
+                    ...prevState.name,
+                    value: userData.name
+                },
+                email: {
+                    ...prevState.email,
+                    value: userData.email
+                }
+            }
+        })
+    }, [userData])
 
     const inputChangedHandler = ( event: React.ChangeEvent<HTMLInputElement>, controlName: string ) => {
         const updatedControls = updateControls(event, controlName, controls);

@@ -1,6 +1,6 @@
+import { toast } from 'react-toastify';
 import axios from '../../axios';
 import { AppDispatch } from '../store';
-import { IUser } from '../../shared/interfaces';
 
 import * as actionTypes from './actionTypes';
 
@@ -67,7 +67,13 @@ export const login: Function = (email: string, password: string) => {
                 dispatch(getUserId(loginData.email, res.data.token))
             })
             .catch(err => {
-                dispatch(loginFail(err.message));
+                if (!err.status) {
+                    toast.error('Não foi possível logar.')
+                    dispatch(loginFail(err));
+                } else {
+                    toast.error('E-mail ou Senha inválidos.');
+                    dispatch(loginFail(err.message));
+                }
             })
         }
         else {
@@ -114,12 +120,16 @@ export const register: Function = (email: string, password: string, name: string
             dispatch(registerStart());
             axios.post('/users', registerData)
             .then(res => {
-                console.log('[res] ', res)
                 dispatch(registerSuccess());
             })
             .catch(err => {
-                console.log('[err] ', err)
-                dispatch(registerFail(err.message));
+                if (!err.status) {
+                    toast.error('Não foi possível registrar.')
+                    dispatch(registerFail(err));
+                } else {
+                    toast.error('Registro não pôde ser efetuado.');
+                    dispatch(registerFail(err.message));
+                }
             })
             
         }
@@ -128,6 +138,7 @@ export const register: Function = (email: string, password: string, name: string
         } 
     };
 };
+
 
 export const setRegisterRedirectPath = (path: string) => {
     return {
@@ -169,7 +180,13 @@ export const reset: Function = ( email: string ) => {
                     dispatch(resetSuccess());
                 })
                 .catch(err => {
-                    dispatch(resetFail(err.message));
+                    if (!err.status) {
+                        toast.error('Não foi possível enviar e-mail de reset de senha.')
+                        dispatch(resetFail(err));
+                    } else {
+                        toast.error('E-mail não encontrado.');
+                        dispatch(resetFail(err.message));
+                    }
                 })
         }
         else {
@@ -211,7 +228,13 @@ export const updatePassword: Function = ( token: string, password: string ) => {
                     dispatch(updatePasswordSuccess());
                 })
                 .catch(err => {
-                    dispatch(updatePasswordFail(err.message));
+                    if (!err.status) {
+                        toast.error('Não foi possível atualizar a senha.')
+                        dispatch(updatePasswordFail(err));
+                    } else {
+                        toast.error('Token inválido.');
+                        dispatch(updatePasswordFail(err.message));
+                    }
                 })
         }
         else {
@@ -225,54 +248,6 @@ export const setResetRedirectPath = (path: string) => {
     return {
         type: actionTypes.SET_RESET_REDIRECT_PATH,
         path
-    };
-};
-
-export const updateAccountStart = () => {
-    return {
-        type: actionTypes.UPDATE_ACCOUNT_START
-    };
-};
-
-export const updateAccountSuccess = (user: IUser) => {
-    return {
-        type: actionTypes.UPDATE_ACCOUNT_SUCCESS,
-        user
-    };
-};
-
-export const updateAccountFail = (error: string) => {
-    return {
-        type: actionTypes.UPDATE_ACCOUNT_FAIL,
-        error
-    };
-};
-
-export const updateAccount: Function = (email: string, password: string, name: string) => {
-    return (dispatch: AppDispatch) => {
-        const token = localStorage.getItem('loginToken');
-        const id = localStorage.getItem('userId');
-        const updateAccountData = {
-            name,
-            email,
-            password,
-        };
-        
-        if (updateAccountData.email !== '' && updateAccountData.password !== '' && updateAccountData.name !== '') {
-            dispatch(updateAccountStart());
-            axios.put(`/users/${id}`, updateAccountData, { 
-                headers: { Authorization: `Bearer ${token}`} 
-                })
-                .then(res => {
-                    dispatch(updateAccountSuccess(updateAccountData));
-                })
-                .catch(err => {
-                    dispatch(updateAccountFail(err.message));
-                });
-        }
-        else {
-            dispatch(updateAccountFail('Erro.'));
-        } 
     };
 };
 

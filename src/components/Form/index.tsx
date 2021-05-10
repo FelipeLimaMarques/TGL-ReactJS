@@ -32,16 +32,28 @@ const Form: React.FC<IProps> = props => {
         } );
     }
 
-    const mappedInputs: Array<any> = formElementsArray.map(formInput => (
-                    <Input
-                        key={formInput.id}
-                        type={formInput.config.elementConfig.type}
-                        placeholder={formInput.config.elementConfig.placeholder}
-                        value={formInput.config.value}
-                        isValid={formInput.config.valid}
-                        onChange={( event: ChangeEvent<HTMLInputElement> ) => props.inputChangedHandler( event, formInput.id )}
-                    />
-    ))
+    const mappedInputs: Array<any> = formElementsArray.map(formInput => {
+        if (formInput.config.elementConfig.placeholder === 'Token') {
+            return <Input
+                key={formInput.id}
+                type={formInput.config.elementConfig.type}
+                placeholder={formInput.config.elementConfig.placeholder}
+                value={formInput.config.value}
+                isValid={formInput.config.valid}
+                hidden
+                onChange={( event: ChangeEvent<HTMLInputElement> ) => props.inputChangedHandler( event, formInput.id )}
+            />
+        } else {
+           return <Input
+                key={formInput.id}
+                type={formInput.config.elementConfig.type}
+                placeholder={formInput.config.elementConfig.placeholder}
+                value={formInput.config.value}
+                isValid={formInput.config.valid}
+                onChange={( event: ChangeEvent<HTMLInputElement> ) => props.inputChangedHandler( event, formInput.id )}
+            />
+        }
+    })
 
     return (
         <Container>

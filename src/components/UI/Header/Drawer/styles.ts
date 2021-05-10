@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div<{show: boolean}>`
     position: fixed;
-    left: 0;
+    left: -1px;
     top: 0;
     height: 100%;
     width: 50%;

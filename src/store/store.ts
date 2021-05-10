@@ -1,18 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
-import fetchGamesReducer from './reducers/fetchGames';
-import currentGameReducer from './reducers/currentGame';
-import newBetReducer from './reducers/newBet';
+import gamesReducer from './reducers/games';
 import authReducer from './reducers/auth';
-import savedBetsReducer from './reducers/savedBets';
+import betsReducer from './reducers/bets';
+import updateUserReducer from './reducers/updateUser';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    fetchGames: fetchGamesReducer,
-    currentGame: currentGameReducer,
-    newBet: newBetReducer,
-    savedBets: savedBetsReducer
+    games: gamesReducer,
+    bets: betsReducer,
+    updateUser: updateUserReducer
   },
   middleware: [thunk]
 })

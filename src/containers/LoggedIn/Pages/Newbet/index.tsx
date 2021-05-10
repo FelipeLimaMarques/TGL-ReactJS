@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import * as actions from '../../../../store/actions';
 import { IGame } from '../../../../shared/interfaces';
@@ -28,13 +28,13 @@ import {
 
 const Newbet: React.FC = () => {
     const dispatch = useAppDispatch();
-    const game = useAppSelector(state => state.currentGame.game);
-    const types = useAppSelector(state => state.fetchGames.types);
-    const selected = useAppSelector(state => state.newBet.bet);
-    const bets = useAppSelector(state => state.newBet.bets);
-    const totalPrice = useAppSelector(state => state.newBet.totalPrice);
-    const isLoading = useAppSelector(state => state.savedBets.loading);
-    const shouldRedirect = useAppSelector(state => state.savedBets.redirect);
+    const currentGame = useAppSelector(state => state.games.current);
+    const types = useAppSelector(state => state.games.types);
+    const selected = useAppSelector(state => state.bets.bet);
+    const bets = useAppSelector(state => state.bets.bets);
+    const totalPrice = useAppSelector(state => state.bets.totalPrice);
+    const isLoading = useAppSelector(state => state.bets.loading);
+    const shouldRedirect = useAppSelector(state => state.bets.redirect);
 
     useEffect(() => {
         window.scrollTo(0,0);
@@ -85,20 +85,20 @@ const Newbet: React.FC = () => {
             {loading}
             <Container>
                 <InfoWrapper>
-                    <NormalH2><BoldSpan>NEW BET</BoldSpan> FOR {game.type.toUpperCase()}</NormalH2>
+                    <NormalH2><BoldSpan>NEW BET</BoldSpan> FOR {currentGame.type.toUpperCase()}</NormalH2>
                     <BoldSpan>Choose a game</BoldSpan>
                     <GamesWrapper>
-                        <GameButtons types={types} clicked={setCurrent} current={game}/>
+                        <GameButtons types={types} clicked={setCurrent} current={currentGame}/>
                     </GamesWrapper>
                     <BoldSpan>Fill your bet</BoldSpan>
-                    <p style={{color: '#707070'}}>{game.description}</p>
-                    <GameNumbers range={game.range} maxLength={game['max-number']} id={game.id} selected={selected.numbers} color={game.color} clicked={handleSelectedNumber}/>
+                    <p style={{color: '#707070'}}>{currentGame.description}</p>
+                    <GameNumbers range={currentGame.range} maxLength={currentGame['max-number']} id={currentGame.id} selected={selected.numbers} color={currentGame.color} clicked={handleSelectedNumber}/>
                     <ButtonsRow>
                         <ButtonsWrapper>
-                            <ButtonBorder onClick={() => dispatch(actions.completeNumbers(game['max-number'], game.range, game.id))}>Complete game</ButtonBorder>
-                            <ButtonBorder onClick={() => dispatch(actions.clearNumbers(game.id))}>Clear game</ButtonBorder>
+                            <ButtonBorder onClick={() => dispatch(actions.completeNumbers(currentGame['max-number'], currentGame.range, currentGame.id))}>Complete game</ButtonBorder>
+                            <ButtonBorder onClick={() => dispatch(actions.clearNumbers(currentGame.id))}>Clear game</ButtonBorder>
                         </ButtonsWrapper>
-                        <AddToCartButton onClick={() => dispatch(actions.addToCart(selected, game))}><Icon src={cart}/>Add to cart</AddToCartButton>
+                        <AddToCartButton onClick={() => dispatch(actions.addToCart(selected, currentGame))}><Icon src={cart}/>Add to cart</AddToCartButton>
                     </ButtonsRow>
                 </InfoWrapper>
                 <CartWrapper>

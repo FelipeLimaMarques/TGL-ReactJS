@@ -19,16 +19,17 @@ import {
 
 const Recent: React.FC = () => {
     const dispatch = useAppDispatch();
-    const types = useAppSelector(state => state.fetchGames.types);
-    const filtered = useAppSelector(state => state.savedBets.filtered);
-    const currentGame = useAppSelector(state => state.currentGame.game);
-    const isFiltered = useAppSelector(state => state.savedBets.isFiltered);
-    const isLoading = useAppSelector(state => state.savedBets.loading);
+    const types = useAppSelector(state => state.games.types);
+    const filtered = useAppSelector(state => state.bets.filtered);
+    const currentGame = useAppSelector(state => state.games.current);
+    const isFiltered = useAppSelector(state => state.bets.isFiltered);
+    const isLoading = useAppSelector(state => state.bets.loading);
     const hasItems = filtered.length > 0;
 
     useEffect(() => {
         window.scrollTo(0,0);
-        dispatch(actions.savedBetsRedirectSetFalse());
+        dispatch(actions.betsRedirectSetFalse());
+        dispatch(actions.updateRedirectSetFalse());
         dispatch(actions.fetchBets());
         return () => {
             dispatch(actions.unfilterBets());

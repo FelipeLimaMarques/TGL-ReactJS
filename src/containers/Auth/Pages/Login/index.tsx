@@ -8,11 +8,13 @@ import { updateControls } from '../../../../shared/utility';
 import Presentation from '../../../../components/UI/Presentation';
 import StyledDiv from '../../../../components/UI/StyledDiv/styles';
 import Form from '../../../../components/Form/index';
+import Loading from '../../../../components/UI/Loading';
 
 const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const isAuthenticated = useAppSelector(state => state.auth.token !== null);
     const authRedirectPath = useAppSelector(state => state.auth.loginRedirectPath);
+    const isLoading = useAppSelector(state => state.auth.loading);
 
     const [controls, setControls] = useState<IAnyProperty>({
         email: {
@@ -64,9 +66,13 @@ const Login: React.FC = () => {
     let authRedirect: JSX.Element | null = null;
     isAuthenticated && (authRedirect = <Redirect to={authRedirectPath} />);
 
+    let loading: JSX.Element | null = null;
+    isLoading && (loading = <Loading />);
+
     return (
         <StyledDiv>
             {authRedirect}
+            {loading}
             <Presentation />
             <Form 
                 submitHandler={submitHandler}

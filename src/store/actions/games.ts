@@ -1,8 +1,22 @@
 import axios from '../../axios';
 import { AppDispatch } from '../store';
-import { ITypes } from '../../shared/interfaces';
+import { ITypes, IGame } from '../../shared/interfaces';
 
 import * as actionTypes from './actionTypes';
+import { toast } from 'react-toastify';
+
+export const setCurrentGame = (data: IGame) => {
+    return {
+        type: actionTypes.SET_CURRENT_GAME,
+        data
+    };
+};
+
+export const clearCurrentGame = () => {
+    return {
+        type: actionTypes.CLEAR_CURRENT_GAME
+    }
+}
 
 export const fetchGamesStart = () => {
     return {
@@ -24,6 +38,7 @@ export const fetchGamesFail = (error: Error) => {
     };
 };
 
+
 export const fetchGames: Function = () => {
     return (dispatch: AppDispatch) => {
         dispatch(fetchGamesStart());
@@ -32,7 +47,12 @@ export const fetchGames: Function = () => {
                 dispatch(fetchGamesSuccess(res.data.types));
             })
             .catch(err => {
-                dispatch(fetchGamesFail(err.response.data.error));
+                if (!err.status) {
+                    toast.error('Não foi possível recuperar os jogos.')
+                    dispatch(fetchGamesFail(err));
+                } else {
+                    dispatch(fetchGamesFail(err.response.data.error));
+                }
             })
     };
 };

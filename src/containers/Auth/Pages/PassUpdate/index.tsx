@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, useQuery } from '../../../../hooks';
 import * as actions from '../../../../store/actions/index';
 import Presentation from '../../../../components/UI/Presentation';
@@ -16,7 +16,6 @@ const PassUpdate: React.FC = () => {
     const authRedirectPath = useAppSelector(state => state.auth.authRedirectPath);
     const isLoading = useAppSelector(state => state.auth.loading);
     const shouldRedirect = useAppSelector(state => state.auth.redirect);
-    const history = useHistory();
     const query = useQuery();
     const token = query.get('token');
 
@@ -32,7 +31,7 @@ const PassUpdate: React.FC = () => {
                 required: true,
             },
             valid: true,
-            touched: false
+            touched: false,
         },
         password: {
             elementType: 'input',
@@ -71,6 +70,7 @@ const PassUpdate: React.FC = () => {
 
     let loading: JSX.Element | null = null;
     isLoading && (loading = <Loading />);
+    
     return (
         <StyledDiv>
             {authRedirect}
@@ -80,7 +80,7 @@ const PassUpdate: React.FC = () => {
                 submitHandler={submitHandler}
                 inputChangedHandler={inputChangedHandler}
                 controls={controls}
-                height="250px"
+                height="170px"
                 title="Reset password"
                 buttonText="Update"
                 isLogin={false}

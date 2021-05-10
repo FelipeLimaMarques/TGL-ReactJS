@@ -7,31 +7,31 @@ export {
     reset,
     authRedirectSetFalse,
     setResetRedirectPath,
-    updateAccount,
     checkAuthState,
     checkAuthStateSuccess,
     updatePassword
 } from './auth';
 export {
-    fetchGames
-} from './fetchGames';
+    updateAccount,
+    updateRedirectSetFalse,
+    fetchUserData
+} from './updateUser';
 export {
+    fetchGames,
     setCurrentGame,
     clearCurrentGame
-} from './currentGame';
+} from './games';
 export {
+    betsRedirectSetFalse,
     addNumber,
     removeNumber,
     clearNumbers,
     completeNumbers,
     addToCart,
     removeFromCart,
-    clearCart
-} from './newBet';
-export {
-    savedBetsRedirectSetFalse,
+    clearCart,
     saveBet,
     fetchBets,
     filterBets,
     unfilterBets,
-} from './savedBets';
+} from './bets';

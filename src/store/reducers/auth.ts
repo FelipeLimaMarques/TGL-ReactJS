@@ -47,8 +47,6 @@ const checkAuthStateSuccess = (state: IAuth, action: AnyAction) => {
 };
 
 const loginFail = (state: IAuth, action: AnyAction) => {
-    toast.error('E-mail ou Senha inválidos.');
-
     return updateObject( state, {
         valid: true,
         loading: false,
@@ -81,8 +79,6 @@ const registerSuccess = (state: IAuth, action: AnyAction) => {
 };
 
 const registerFail = (state: IAuth, action: AnyAction) => {
-    toast.error('Registro não pôde ser efetuado.');
-
     return updateObject( state, {
         error: action.error,
         loading: false
@@ -110,7 +106,7 @@ const resetSuccess = (state: IAuth, action: AnyAction) => {
 };
 
 const resetFail = (state: IAuth, action: AnyAction) => {
-    toast.error('E-mail não encontrado.');
+    
 
     return updateObject( state, {
         error: action.error,
@@ -145,33 +141,6 @@ const updatePasswordSuccess = (state: IAuth, action: AnyAction) => {
 };
 
 const updatePasswordFail = (state: IAuth, action: AnyAction) => {
-    toast.error('Token inválido.');
-
-    return updateObject( state, {
-        error: action.error,
-        loading: false
-    });
-};
-
-const updateAccountStart = ( state: IAuth, action: AnyAction ) => {
-    return updateObject( state, {
-        error: null,
-        loading: true
-    });
-};
-
-const updateAccountSuccess = (state: IAuth, action: AnyAction) => {
-    toast.success('Dados atualizados.');
-
-    return updateObject( state, {
-        loading: false,
-        redirect: true
-    });
-};
-
-const updateAccountFail = (state: IAuth, action: AnyAction) => {
-    toast.error('Falha ao atualizar os dados.');
-
     return updateObject( state, {
         error: action.error,
         loading: false
@@ -204,9 +173,6 @@ const authReducer = ( state = initialState, action: AnyAction) => {
         case actionTypes.RESET_SUCCESS: return resetSuccess(state, action);
         case actionTypes.RESET_FAIL: return resetFail(state, action);
         case actionTypes.SET_RESET_REDIRECT_PATH: return setResetRedirectPath(state,action);
-        case actionTypes.UPDATE_ACCOUNT_START: return updateAccountStart(state, action);
-        case actionTypes.UPDATE_ACCOUNT_SUCCESS: return updateAccountSuccess(state, action);
-        case actionTypes.UPDATE_ACCOUNT_FAIL: return updateAccountFail(state, action);
         case actionTypes.CHECK_AUTH_STATE: return checkAuthState(state, action);
         case actionTypes.CHECK_AUTH_STATE_SUCCESS: return checkAuthStateSuccess(state, action);
         default: return state;
